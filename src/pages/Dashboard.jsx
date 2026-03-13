@@ -66,18 +66,18 @@ export default function Dashboard() {
   );
 
   return (
-    <div className="flex-1 bg-stone-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="flex-1 py-12 px-4 sm:px-6 lg:px-8 mt-16 relative z-10 w-full">
+      <div className="max-w-7xl mx-auto space-y-10">
         
         {/* Header Area */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <h1 className="text-3xl font-serif font-bold text-stone-900 tracking-tight">Mi Recetario</h1>
-            <p className="text-stone-500 mt-1">Administra tus platillos. ({recipes.length} elementos guardados)</p>
+            <h1 className="text-4xl sf-pro-title text-black tracking-tight">Mi Recetario</h1>
+            <p className="text-apple-500 mt-2 font-medium">Administra tus platillos. ({recipes.length} elementos guardados)</p>
           </div>
           <button 
             onClick={handleAdd}
-            className="flex items-center justify-center gap-2 bg-brand-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-brand-700 transition-all shadow-md hover:shadow-lg active:scale-95"
+            className="flex items-center justify-center gap-2 bg-black text-white px-6 py-3 rounded-full font-medium hover:scale-105 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 active:scale-95"
           >
             <Plus className="w-5 h-5" />
             Nueva Receta
@@ -86,12 +86,12 @@ export default function Dashboard() {
 
         {/* Search Bar */}
         <div className="relative max-w-xl">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-stone-400" />
+          <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+            <Search className="h-5 w-5 text-apple-400" />
           </div>
           <input
             type="text"
-            className="block w-full pl-11 pr-4 py-3 border border-stone-200 rounded-2xl leading-5 bg-white shadow-sm placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all"
+            className="block w-full pl-12 pr-4 py-4 liquid-glass rounded-2xl leading-5 text-black placeholder-apple-400 focus:outline-none focus:ring-2 focus:ring-apple-400 focus:bg-white/60 transition-all font-medium"
             placeholder="Buscar recetas por nombre..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -115,12 +115,12 @@ export default function Dashboard() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-24 bg-white border border-stone-200 rounded-3xl border-dashed">
-            <div className="mx-auto w-16 h-16 bg-stone-50 rounded-2xl flex items-center justify-center mb-4">
-              <Search className="w-8 h-8 text-stone-300" />
+          <div className="text-center py-24 liquid-glass rounded-3xl">
+            <div className="mx-auto w-16 h-16 bg-white/50 rounded-2xl flex items-center justify-center mb-4">
+              <Search className="w-8 h-8 text-apple-400" />
             </div>
-            <h3 className="text-lg font-medium text-stone-900 font-serif">No se encontraron recetas</h3>
-            <p className="mt-1 text-sm text-stone-500">
+            <h3 className="text-xl font-medium text-black sf-pro-title">No se encontraron recetas</h3>
+            <p className="mt-2 text-apple-500 font-medium max-w-sm mx-auto">
               {searchQuery ? 'Intenta usar otros términos de búsqueda.' : 'Aún no tienes recetas registradas. ¡Añade tu primera creación gastronómica!'}
             </p>
           </div>

@@ -7,22 +7,38 @@ export default {
   theme: {
     extend: {
       colors: {
+        apple: {
+          50: '#fbfbfd',
+          100: '#f5f5f7',
+          200: '#e8e8ed',
+          300: '#d2d2d7',
+          400: '#86868b',
+          500: '#424245',
+          600: '#1d1d1f',
+        },
         brand: {
-          50: '#fdf8f6',
-          100: '#f2e8e5',
-          200: '#eaddd7',
-          300: '#e0cec7',
-          400: '#d2bab0',
-          500: '#a37c68', // main primary
-          600: '#8b6552',
-          700: '#755240',
-          800: '#5c3e30',
-          900: '#483025',
+          500: '#ff3b30', // Apple Red as accent
+          600: '#d70015',
         }
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        serif: ['Merriweather', 'serif'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+      },
+      animation: {
+        'blob': 'blob 10s infinite',
+        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+      },
+      keyframes: {
+        blob: {
+          '0%': { transform: 'translate(0px, 0px) scale(1)' },
+          '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+          '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+          '100%': { transform: 'translate(0px, 0px) scale(1)' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        }
       }
     },
   },
