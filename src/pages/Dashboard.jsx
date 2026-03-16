@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import RecipeCard from '../components/RecipeCard';
 import RecipeModal from '../components/RecipeModal';
+import RecipeDetailModal from '../components/RecipeDetailModal';
 import { Search, Plus, Loader2 } from 'lucide-react';
 
 export default function Dashboard() {
@@ -12,6 +13,7 @@ export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingRecipe, setEditingRecipe] = useState(null);
+  const [viewingRecipe, setViewingRecipe] = useState(null);
 
   useEffect(() => {
     fetchRecipes();
@@ -24,8 +26,7 @@ export default function Dashboard() {
         .from('recipes')
         .select('*')
         .order('created_at', { ascending: false })
-        .limit(100); // Requerimiento: Listar 100 elementos
-
+        .limit(100);
       if (error) throw error;
       setRecipes(data || []);
     } catch (error) {
@@ -61,21 +62,23 @@ export default function Dashboard() {
     fetchRecipes();
   };
 
-  const filteredRecipes = recipes.filter(recipe => 
+  const filteredRecipes = recipes.filter(recipe =>
     recipe.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className="flex-1 py-12 px-4 sm:px-6 lg:px-8 mt-16 relative z-10 w-full">
       <div className="max-w-7xl mx-auto space-y-10">
-        
-        {/* Header Area */}
+
+        {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <h1 className="text-4xl sf-pro-title text-black tracking-tight">Mi Recetario</h1>
-            <p className="text-apple-500 mt-2 font-medium">Administra tus platillos. ({recipes.length} elementos guardados)</p>
+            <p className="text-apple-500 mt-2 font-medium">
+              Administra tus platillos. ({recipes.length} elementos guardados)
+            </p>
           </div>
-          <button 
+          <button
             onClick={handleAdd}
             className="flex items-center justify-center gap-2 bg-black text-white px-6 py-3 rounded-full font-medium hover:scale-105 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-all duration-300 active:scale-95"
           >
@@ -84,7 +87,7 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* Search Bar */}
+        {/* Search */}
         <div className="relative max-w-xl">
           <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
             <Search className="h-5 w-5 text-apple-400" />
@@ -98,7 +101,7 @@ export default function Dashboard() {
           />
         </div>
 
-        {/* Recipe Grid */}
+        {/* Grid */}
         {loading ? (
           <div className="flex justify-center py-20">
             <Loader2 className="w-10 h-10 animate-spin text-brand-500" />
@@ -106,9 +109,10 @@ export default function Dashboard() {
         ) : filteredRecipes.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredRecipes.map(recipe => (
-              <RecipeCard 
-                key={recipe.id} 
-                recipe={recipe} 
+              <RecipeCard
+                key={recipe.id}
+                recipe={recipe}
+                onView={(r) => setViewingRecipe(r)}
                 onEdit={() => handleEdit(recipe)}
                 onDelete={() => handleDelete(recipe.id)}
               />
@@ -121,16 +125,28 @@ export default function Dashboard() {
             </div>
             <h3 className="text-xl font-medium text-black sf-pro-title">No se encontraron recetas</h3>
             <p className="mt-2 text-apple-500 font-medium max-w-sm mx-auto">
-              {searchQuery ? 'Intenta usar otros términos de búsqueda.' : 'Aún no tienes recetas registradas. ¡Añade tu primera creación gastronómica!'}
+              {searchQuery
+                ? 'Intenta usar otros términos de búsqueda.'
+                : 'Aún no tienes recetas registradas. ¡Añade tu primera creación gastronómica!'}
             </p>
           </div>
         )}
-
       </div>
 
-      <RecipeModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+      {/* Modal detalle */}
+      {viewingRecipe && (
+        <RecipeDetailModal
+          recipe={viewingRecipe}
+          onClose={() => setViewingRecipe(null)}
+          onEdit={() => { setViewingRecipe(null); handleEdit(viewingRecipe); }}
+          onDelete={() => { setViewingRecipe(null); handleDelete(viewingRecipe.id); }}
+        />
+      )}
+
+      {/* Modal crear/editar */}
+      <RecipeModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
         onSave={handleSave}
         recipeToEdit={editingRecipe}
       />
