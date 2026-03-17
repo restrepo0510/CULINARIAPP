@@ -6,14 +6,12 @@ export default function RecipeDetailModal({ recipe, onClose, onEdit, onDelete })
 
   if (!recipe) return null;
 
-  // Formatea la descripción respetando emojis de sección y pasos
   const formatDescription = (text) => {
     if (!text) return <p className="text-apple-400 italic text-sm">Sin descripción</p>;
 
     return text.split('\n').map((line, i) => {
       if (line.trim() === '') return <div key={i} className="h-2" />;
 
-      // Títulos de sección con emojis
       const isSectionHeader = /^[⏱🛒📋💡🍽]/.test(line.trim());
       if (isSectionHeader) {
         return (
@@ -23,7 +21,6 @@ export default function RecipeDetailModal({ recipe, onClose, onEdit, onDelete })
         );
       }
 
-      // Pasos numerados: 1. 2. 3.
       const isStep = /^\d+\./.test(line.trim());
       if (isStep) {
         return (
@@ -33,7 +30,6 @@ export default function RecipeDetailModal({ recipe, onClose, onEdit, onDelete })
         );
       }
 
-      // Ingredientes con bullet •
       if (line.trim().startsWith('•')) {
         return (
           <p key={i} className="text-apple-600 text-sm ml-5 mb-0.5 leading-relaxed">
@@ -42,7 +38,6 @@ export default function RecipeDetailModal({ recipe, onClose, onEdit, onDelete })
         );
       }
 
-      // Texto normal
       return (
         <p key={i} className="text-apple-600 text-sm mb-1 leading-relaxed">
           {line}
@@ -53,7 +48,7 @@ export default function RecipeDetailModal({ recipe, onClose, onEdit, onDelete })
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+      className="fixed inset-0 z-40 flex items-end sm:items-center justify-center p-0 sm:p-4 sm:pt-20"
       onClick={onClose}
     >
       {/* Backdrop */}
@@ -61,11 +56,11 @@ export default function RecipeDetailModal({ recipe, onClose, onEdit, onDelete })
 
       {/* Modal */}
       <div
-        className="relative w-full sm:max-w-lg max-h-[92vh] liquid-glass rounded-t-3xl sm:rounded-3xl overflow-hidden flex flex-col border border-white/40 shadow-[0_32px_64px_rgba(0,0,0,0.2)]"
+        className="relative w-full sm:max-w-lg max-h-[85vh] liquid-glass rounded-t-3xl sm:rounded-3xl overflow-hidden flex flex-col border border-white/40 shadow-[0_32px_64px_rgba(0,0,0,0.2)]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Imagen */}
-        <div className="relative h-56 shrink-0 bg-black/5">
+        <div className="relative h-52 shrink-0 bg-black/5">
           {recipe.image_url && !imgError ? (
             <img
               src={recipe.image_url}
@@ -88,7 +83,7 @@ export default function RecipeDetailModal({ recipe, onClose, onEdit, onDelete })
             <X className="w-5 h-5" />
           </button>
 
-          {/* Botones editar / eliminar sobre la imagen */}
+          {/* Botones editar / eliminar */}
           <div className="absolute bottom-3 right-3 flex gap-2">
             <button
               onClick={() => { onClose(); onEdit(); }}
@@ -107,7 +102,6 @@ export default function RecipeDetailModal({ recipe, onClose, onEdit, onDelete })
 
         {/* Contenido scrolleable */}
         <div className="overflow-y-auto flex-1 px-6 py-5">
-          {/* Nombre */}
           <h2 className="sf-pro-title text-2xl text-black leading-tight mb-1">
             {recipe.name}
           </h2>
@@ -117,12 +111,10 @@ export default function RecipeDetailModal({ recipe, onClose, onEdit, onDelete })
             })}
           </p>
 
-          {/* Descripción formateada */}
           <div className="bg-white/40 rounded-2xl p-4 border border-white/50">
             {formatDescription(recipe.description)}
           </div>
 
-          {/* Espacio al final para scroll cómodo */}
           <div className="h-4" />
         </div>
       </div>
